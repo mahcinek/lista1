@@ -8,18 +8,32 @@
 using namespace std;
 class Osoba {
     string imie;
-    int wiek;
+    int *wiek;
 public:
-    Osoba(){};
-    Osoba (int age,string name):wiek(age),imie(name){};
-    Osoba (Osoba &otherOsoba)
+    Osoba(){imie="";
+        wiek=new int ();
+    };
+    Osoba (const int age,string name){
+        imie=name;
+     wiek= new int (age);
+    };
+    Osoba (const Osoba &otherOsoba)
     {
         this->imie=otherOsoba.imie;
-        this->wiek=otherOsoba.wiek;
+        wiek= new int (otherOsoba.getVal());
     }
-    ~Osoba(){};
+    ~Osoba(){
+        delete wiek;
+    };
+    int getVal()const { int *wy=this->wiek;
+        return *wy;}
+    Osoba& operator = (const Osoba &other){
+        *this->wiek=*other.wiek;
+        this->imie= other.imie;
+        return *this;
+    };
 
-    string toString (){ return imie+" "+std::to_string(wiek);};
+    string toString (){ return imie+" "+std::to_string(this->getVal());};
 
 };
 

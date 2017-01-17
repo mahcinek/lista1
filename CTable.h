@@ -6,6 +6,7 @@
 #define LISTA1_CTABLE_H
 
 #include <iostream>
+#include <string>
 
 using namespace std;
 template <class T>
@@ -14,7 +15,7 @@ private:
     string s_name;
     T *i_Table;
     int table_length;
-    int DEFAULT_VALUE = -1;
+    T DEFAULT_VALUE;
 public:
     CTable(){
         table_length =5;
@@ -32,6 +33,7 @@ public:
         this->table_length=size;
         this->s_name=s_name;
         i_Table = new T[size];
+        this->DEFAULT_VALUE=defValue;
         for (int i=0;i<table_length;i++)
             i_Table[i]=defValue;
     };
@@ -44,6 +46,7 @@ public:
         s_name = pcOther.s_name+"_copy";
         table_length = pcOther.table_length;
         i_Table = new int[table_length];
+        DEFAULT_VALUE=pcOther.DEFAULT_VALUE;
 
         int tmp_val = 0;
         for (int i = 0; i < table_length; i++)
@@ -51,7 +54,7 @@ public:
             tmp_val=pcOther.getValue(i);
             i_Table[i] = tmp_val;
         }
-        cout << "kopiuj: " << pcOther.s_name<<endl;
+        //cout << "kopiuj: " << pcOther.s_name<<endl;
     };
     string getName(){
         return s_name;
@@ -67,22 +70,53 @@ public:
 
     };
     bool setValue(T value, int place){
-        if (place >= table_length||place<0)
-            throw -1;
-        else
+        if (place >= table_length||place<0) {
+            string s ="Podany element jest spoza zakresu CTable index " + to_string(place) + " tablica ma miejsca od 0 do " +
+                      to_string(table_length - 1);
+            throw s;
+        }else
         {
             i_Table[place] = value;
             return true;
         }
 
     };
+
+    bool setValueptr(T* value, int place){
+        if (place >= table_length||place<0) {
+            string s ="Podany element jest spoza zakresu CTable index " + to_string(place) + " tablica ma miejsca od 0 do " +
+                      to_string(table_length - 1);
+            throw s;
+        }else
+        {
+            i_Table[place] = *value;
+            return true;
+        }
+
+    };
     T getValue(int place)const
     {
-        if (place >= table_length||place<0)
-            throw -1;
+        if (place >= table_length||place<0) {
+            string s ="Podany element jest spoza zakresu CTable index " + to_string(place) + " tablica ma miejsca od 0 do " +
+                      to_string(table_length - 1);
+            throw s;
+        }
         else
         {
             return  i_Table[place];
+
+        }
+    };
+    T getValuepoint(int place)const
+    {
+        if (place >= table_length||place<0) {
+            string s ="Podany element jest spoza zakresu CTable index " + to_string(place) + " tablica ma miejsca od 0 do " +
+                      to_string(table_length - 1);
+            throw s;
+        }
+        else
+        {
+            return  *i_Table[place];
 
         }
     };
